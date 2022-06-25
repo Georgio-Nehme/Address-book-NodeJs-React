@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const uuid = require('uuid');
+var mongoose = require('mongoose'),
+Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -26,5 +26,9 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
   
-module.exports = mongoose.model('User', userSchema);
+
+
+const User= new mongoose.model('User', userSchema)
+module.exports = User;

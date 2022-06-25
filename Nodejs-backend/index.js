@@ -1,13 +1,13 @@
 require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
-// const cors = require('cors');
+const cors = require('cors');
 
-//DB Connection
-const DB_CONNECT = process.env.DB_CONNECT || "";
-mongoose.connect(DB_CONNECT, () => console.log('connected to db'));
+
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 
 
 //Routing for users
@@ -16,18 +16,35 @@ app.use('/users', userRouter)
 
 
 
-
 //Routing for contacts
 const contactRouter = require('./routes/contacts')
 app.use('/contacts', contactRouter)
 
 
+app.listen(5000, () => {console.log('server started on port 5000');});
 
 
+//DB Connection
+const DB_CONNECT = process.env.DB_CONNECT || "";
+// mongoose.connect(DB_CONNECT).then(() => console.log("Connected to DB")).catch((error)=>{
+//     console.log(error)
+// });
 
 
-
-app.listen(5001, () => {
-    console.log('server started on port 5001');
+mongoose
+.connect(DB_CONNECT)
+.then(() => {
+  console.log("Successfully connected to database");
+})
+.catch((error) => {
+  console.log("database connection failed. exiting now...");
+  console.error(error);
+  process.exit(1);
 });
+
+
+
+
+
+
 
