@@ -9,7 +9,7 @@ const contactSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: false,
     min: 10,
     max: 255,
   },
@@ -27,7 +27,7 @@ const contactSchema = new mongoose.Schema({
   },
   location: {
     type:String,
-    required: true,
+    required: false,
     min: 10,
     max: 255,
   },
@@ -35,7 +35,7 @@ const contactSchema = new mongoose.Schema({
     type:String,
     required: true,
   }
-  
 });
 
-module.exports = mongoose.model('Contact', contactSchema);
+const Contact= new mongoose.model('Contact', contactSchema)
+module.exports = Contact;

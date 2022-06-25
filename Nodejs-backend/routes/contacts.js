@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
+const { getAllContacts, addContact, deleteContact } = require('../Controllers/contactController')
 
 
-router.get("/", (req,res)=>{
-    res.json({"message":"contacts"});
-})
-
+//retrieve all contacts related to a user on login
+router.get("/all_contacts", getAllContacts);
+//create a contact 
+router.post("/add_contact", addContact);
+//delete a contact
+router.delete("/contact", deleteContact);
 
 module.exports = router
