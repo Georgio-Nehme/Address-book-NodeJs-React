@@ -1,8 +1,8 @@
 const navbar = () => {
+    
     return ( 
         <div className="navbar">
-            <h1>AddressBook</h1>
-            <button>Add Contact</button>
+            <h1>AddressBook</h1>           
         </div>
      );
 }

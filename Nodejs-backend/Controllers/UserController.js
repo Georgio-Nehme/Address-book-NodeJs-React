@@ -1,7 +1,7 @@
 const User = require('../Models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// const TOKEN_SECRET = process.env.TOKEN_SECRET || "" ;
+
 
 
 async function getUsers() {
@@ -25,18 +25,12 @@ async function addUser(body, hashPassword) {
 }
 
 
-async function getByEmail(email) {
-  return await User.findOne({
-    email
-  });
-}
-
 
 async function get(req, res) {
   try {
     console.log(req.query);
 
-    if (req.query.id) { // ?id=k1231 -> query paramet
+    if (req.query.id) {
       const id = req.query.id;
       const result = await getById(id);
       console.log('result of specific user =>', result);
@@ -75,7 +69,7 @@ async function login (req, res) {
         res.status(400).send("All input is required");
     }
 
-    email.toLowerCase()
+
     const user = await User.findOne({ email });
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign(
