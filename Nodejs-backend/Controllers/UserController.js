@@ -1,7 +1,7 @@
 const User = require('../Models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const TOKEN_SECRET = process.env.TOKEN_SECRET || "";
+// const TOKEN_SECRET = process.env.TOKEN_SECRET || "" ;
 
 
 async function getUsers() {
@@ -59,38 +59,39 @@ async function register(req, res) {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-    
-
-
     const addUserResult = await addUser(req.body, hashPassword);
     console.log('addUserResult =>', addUserResult);
-
-        
+   
     return res.send({ user: addUserResult._id });
   } catch (error) {
     console.log(error);
   }
 }
 
-async function login(req, res) {
+async function login (req, res) {
   try {
-    const user = await getByEmail(req.body.email);
-    if (!user) return res.status(400).send('invalid credentials');
+     const { email, password } = req.body;
+     if (!(email && password)) {
+        res.status(400).send("All input is required");
+    }
 
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).send('invalid credentials');
-
-    const token = jwt.sign(
-      {_id: user._id, name: user.name, email: user.email},
-      TOKEN_SECRET
-    );
-
-    return res.header('auth-token', token).send(token);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    email.toLowerCase()
+    const user = await User.findOne({ email });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign(
+        { user_id: user._id, email },
+        process.env.TOKEN_SECRET,
+      );
+      user.token = token;
+      res.status(200).json(user);
+    }
+    res.status(400).send("Invalid Credentials");
+  } catch (err) {
+    console.log(err);
   }
-}
+};
+
+
 
 module.exports = {
   get,
