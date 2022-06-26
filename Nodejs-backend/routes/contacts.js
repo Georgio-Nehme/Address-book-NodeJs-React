@@ -8,6 +8,6 @@ router.get("/all_contacts", getAllContacts);
 //create a contact 
 router.post("/add_contact", addContact);
 //delete a contact
-router.delete("/contact", deleteContact);
+router.delete("/delete_contact", deleteContact);
 
 module.exports = router

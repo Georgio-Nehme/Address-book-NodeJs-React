@@ -47,9 +47,15 @@ async function addContact(req,res) {
 
 
 
-async function deleteContact() {
-    console.log('route is working');
-}
+async function deleteContact(req,res) {
+
+  await Contact.remove({id: req.body.id});
+    res.send({ 
+      message: "Contact deleted successfully"
+    })
+};
+   
+
 
 module.exports = {
     addContact,
